@@ -1,0 +1,35 @@
+plugins {
+    id 'java'
+}
+
+group 'org.app'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+task buildZip(type: Zip) {
+    from compileJava
+    from processResources
+    into('lib') {
+        from configurations.runtimeClasspath
+    }
+}
+
+dependencies {
+    implementation platform('software.amazon.awssdk:bom:2.19.13')
+    implementation 'software.amazon.awssdk:dynamodb'
+    implementation 'software.amazon.awssdk:iam'
+    implementation 'software.amazon.awssdk:kinesis'
+    implementation 'software.amazon.awssdk:s3'
+    implementation 'com.amazonaws:aws-lambda-java-core:1.2.1'
+    implementation 'com.amazonaws:aws-lambda-java-events:3.11.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
+    implementation group: "com.twilio.sdk", name: "twilio", version: "9.2.2"
+}
+
+test {
+    useJUnitPlatform()
+}
